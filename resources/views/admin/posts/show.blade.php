@@ -1,13 +1,11 @@
 @extends('layouts.admin')
 
 @section('title', 'show')
-{{--
-@section('content')
-
-@endsection --}}
 
 @section('content')
     <div class="container">
+
+        {{-- route for index --}}
         <div class="row">
             <div class="col py-3 text-uppercase">
                 <a href="{{ route('admin.posts.index') }}">
@@ -15,6 +13,8 @@
                 </a>
             </div>
         </div>
+
+        {{-- post details --}}
         <div class="row">
             <div class="col">
                 <h1>
@@ -25,10 +25,13 @@
                 </p>
             </div>
         </div>
+
+        {{-- edit button --}}
         <div>
             <a class="btn btn-primary" href="{{ route('admin.posts.edit', $post->id) }}">Edit</a>
         </div>
 
+        {{-- delete button --}}
         <div class="row">
             <div class="col">
                 <form method="POST" action="{{  route('admin.posts.destroy', $post->id) }}" >
@@ -41,6 +44,7 @@
             </div>
         </div>
 
+        {{-- link for back page --}}
         <div class="row">
             <div class="col">
                 <a href="{{  url()->previous() }}">Back</a>

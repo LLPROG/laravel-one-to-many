@@ -8,7 +8,20 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+
     use Notifiable;
+
+    public function Posts ()
+
+    {
+        return $this->hasMany('App\Post');
+    }
+
+    public function UserInfo ()
+
+    {
+        return $this->hasOne('App\UserInfo');
+    }
 
     /**
      * The attributes that are mass assignable.

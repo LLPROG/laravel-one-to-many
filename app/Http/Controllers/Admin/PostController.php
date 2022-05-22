@@ -6,15 +6,30 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
 
 class PostController extends Controller
 {
-
-    protected $validationRules = [
+    // validation with array variable
+    public $validationRules = [
         'title'         => 'required|min:3|max:100',
-        'content'       => 'min:3|max:250',
+        'content'       => 'required',
         'slug'          => 'unique'
     ];
+
+    // validation with function
+    private function validator($model) {
+        return [
+            'title'         => 'required|min:3|max:100',
+            'content'       => 'required',
+            'slug' => [
+                'required',
+                Rule::unique('posts')->ignore($model->id),
+            ]
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -48,18 +63,18 @@ class PostController extends Controller
     {
         $newPostData = $request->all();
         //validazione
-        $request->validate($this->validationRules);
+        $request->validate($this->validator(null));
 
-        $formData = [
-            'user_id' => Auth::user()->id
-        ];
-        $newPostData['slug'] = Post::slugGenerator($newPostData['title']);
+        // $newPostData['slug'] = Post::slugGenerator($newPostData['title']);
 
-        $post = new Post();
-        $post->fill($newPostData, $formData);
-        $result = $post->save();
+        $post = Post::create($request->all());
 
-        return redirect()->route('admin.posts.show', $post->id);
+        return redirect()->route('admin.posts.show', $post->slug);
+
+        // $formData = [
+        //     'user_id' => Auth::user()->id
+        // ];
+
     }
 
     /**
@@ -96,9 +111,11 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        $request->validate($this->validationRules);
+        $request->validate($this->validator($post->id));
+
         // prendiamo i nuovi valori
         $newPostData = $request->all();
+
         // dd($newPostData);
         $newPostData['slug'] = Post::slugGenerator($newPostData['title']);
         $post->update($newPostData);

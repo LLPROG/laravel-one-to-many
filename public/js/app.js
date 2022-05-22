@@ -40099,52 +40099,53 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.esm.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
+
+
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
 var app = new Vue({
   el: '#app'
-}); // const confirmationOverlay = document.querySelector('#confirmation-overlay');
-// if (confirmationOverlay) {
-//     document.querySelectorAll('.btn-delete').forEach(button => {
-//         button.addEventListener('click', function() {
-//             const id = this.closest('tr').dataset.id;
-//             const confirmationForm = confirmationOverlay.querySelector('form');
-//             const strAction = confirmationForm.dataset.base.replace('*****', id);
-//             confirmationForm.action = strAction;
-//             confirmationOverlay.clas<sList.remove('d-none');
-//         })
-//     });
-//     const btnNo = document.querySelector('#btn-no');
-//     btnNo.addEventListener('click', function() {
-//         confirmationForm.action = '';
-//         confirmationOverlay.classList.add('d-none');
-//     })
-// };
+});
+var btnSlugger = document.getElementById('btn-slugger'); // function for button slugger
+
+if (btnSlugger) {
+  btnSlugger.addEventListener('click', function () {
+    var eleSlug = document.getElementById('slug');
+    var title = document.getElementById('title').value;
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/admin/slugger', {
+      originalTitle: title
+    }).then(function (response) {
+      eleSlug.value = response.data.slug;
+    });
+  });
+}
+
+var confirmationOverlay = document.querySelector('#confirmation-overlay');
+
+if (confirmationOverlay) {
+  document.querySelectorAll('.btn-delete').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var index = this.closest('tr').dataset.id;
+      var confirmationForm = confirmationOverlay.querySelector('form');
+      var action = confirmationForm.dataset.base.replace('*****', index);
+      confirmationForm.action = action;
+      confirmationOverlay.classList.remove('d-none');
+    });
+  });
+  var btnNo = document.querySelector('#btn-no');
+  btnNo.addEventListener('click', function () {
+    confirmationForm.action = '';
+    confirmationOverlay.classList.add('d-none');
+  });
+}
 
 /***/ }),
 

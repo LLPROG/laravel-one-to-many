@@ -18,22 +18,41 @@
                 </div>
             @endif
 
+            {{-- form for create a new post - route ti store --}}
             <form method="POST" action="{{ route('admin.posts.store') }}">
 
+                {{-- token for authorization --}}
                 @csrf
+
+                {{-- TITLE --}}
                 <div class="mb-3">
-                  <label for="title" class="form-label">title</label>
-                  <input type="text" class="form-control" id="title" name="title">
+                    {{-- __() => funzione per rendere traducibili la parta visibile --}}
+                    <label for="title" class="form-label">{{__('Title')}}</label>
+                    <input type="text" class="form-control" id="title" name="title" value="{{  old('title') }}">
                 </div>
 
+
+                {{-- SLUG --}}
                 <div class="mb-3">
-                    <label for="content" class="form-label">Content</label>
-                    <textarea type="text" class="form-control" id="content" name="content"></textarea>
+                    <label for="slug" class="form-label">{{__('Slug')}}</label>
+                    <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug') }}">
+                </div>
+                {{-- slugger button --}}
+                <input type="button" value="Generate slug" id="btn-slugger">
+
+
+                {{-- CONTENT --}}
+                <div class="mb-3">
+                    <label for="content" class="form-label">{{__('Content')}}</label>
+                    <textarea type="text" class="form-control" id="content" name="content">{{ old('content') }}</textarea>
                 </div>
 
+                {{-- button create --}}
                 <button type="submit" class="btn btn-primary">Create</button>
+
             </form>
 
+            {{-- link for go to the preview page --}}
             <div class="row">
                 <div class="col">
                     <a href="{{  url()->previous() }}">Back</a>

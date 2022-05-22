@@ -1,10 +1,6 @@
 @extends('layouts.admin')
 
 @section('title', 'edit')
-{{--
-@section('content')
-
-@endsection --}}
 
 @section('content')
 <div class="container">
@@ -22,21 +18,35 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('admin.posts.update', $post->id) }}">
+            <form method="POST" action="{{ route('admin.posts.update', $post->slug) }}">
 
                 @csrf
                 @method('PUT')
 
+                {{-- TITLE --}}
                 <div class="mb-3">
-                  <label for="title" class="form-label">title</label>
-                  <input type="text" class="form-control" id="title" name="title" value="{{ old($post->title, $post->title) }}">
+                    {{-- __() => funzione per rendere traducibili la parta visibile --}}
+                    <label for="title" class="form-label">{{__('Title')}}</label>
+                    <input type="text" class="form-control" id="title" name="title" value="{{  old('title', $post->title) }}">
                 </div>
 
+
+                {{-- SLUG --}}
                 <div class="mb-3">
-                    <label for="content" class="form-label">Content</label>
-                    <textarea type="text" class="form-control" id="content" name="content">{{ old($post->content, $post->content) }}</textarea>
+                    <label for="slug" class="form-label">{{__('Slug')}}</label>
+                    <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug', $post->slug) }}">
+                </div>
+                {{-- slugger button --}}
+                <input type="button" value="Generate slug" id="btn-slugger">
+
+
+                {{-- CONTENT --}}
+                <div class="mb-3">
+                    <label for="content" class="form-label">{{__('Content')}}</label>
+                    <textarea type="text" class="form-control" id="content" name="content">{{ old('content', $post->content) }}</textarea>
                 </div>
 
+                {{-- button create --}}
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
 

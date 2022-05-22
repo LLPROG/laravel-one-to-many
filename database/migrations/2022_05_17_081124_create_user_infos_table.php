@@ -21,7 +21,7 @@ class CreateUserInfosTable extends Migration
             $table->date('birth_date');
             $table->foreign('user_id')
                 ->references('id')
-                ->on('user');
+                ->on('users');
         });
     }
 
