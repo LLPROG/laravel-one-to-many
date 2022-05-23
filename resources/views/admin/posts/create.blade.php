@@ -24,6 +24,19 @@
                 {{-- token for authorization --}}
                 @csrf
 
+                {{-- CATEGORY --}}
+                <div class="mb-3">
+                    {{-- __() => funzione per rendere traducibili la parta visibile --}}
+                    <select class="form-select" aria-label="Default select exemple" name="category_id" id="category">
+                        <option value="" selected>Select a category</option>
+
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+
                 {{-- TITLE --}}
                 <div class="mb-3">
                     {{-- __() => funzione per rendere traducibili la parta visibile --}}
@@ -38,7 +51,7 @@
                     <input type="text" class="form-control" id="slug" name="slug" value="{{ old('slug') }}">
                 </div>
                 {{-- slugger button --}}
-                <input type="button" value="Generate slug" id="btn-slugger">
+                <input type="button" value="Generate slug" id="btn-slugger" class=" btn btn-primary">
 
 
                 {{-- CONTENT --}}

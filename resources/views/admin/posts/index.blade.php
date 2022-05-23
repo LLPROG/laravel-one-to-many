@@ -30,8 +30,8 @@
                     </thead>
                     <tbody>
                         @foreach ($posts as $post)
-                            <tr>
-                                <th class="text-center" scope="row">{{ $post->slug }}</th>
+                            <tr data-id="{{ $post->slug }}">
+                                <th class="text-center" scope="row">{{ $post->id }}</th>
                                 <td>{{ $post->title }}</td>
                                 <td>{{ $post->content }}</td>
                                 <td>{{ $post->slug }}</td>
@@ -42,10 +42,14 @@
                                     <a class="btn btn-primary" href="{{ route('admin.posts.show', $post->slug) }}">View</a>
                                 </td>
                                 <td>
-                                    <a class="btn btn-primary" href="{{ route('admin.posts.edit', $post->slug) }}">Edit</a>
+                                    @if (Auth::user()->id === $post->user_id)
+                                        <a class="btn btn-primary" href="{{ route('admin.posts.edit', $post->slug) }}">Edit</a>
+                                    @endif
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-danger btn-delete" data-id="{{ $post->slug }}">Delete</button>
+                                    @if (Auth::user()->id === $post->user_id)
+                                        <button class="btn btn-danger btn-delete">Delete</button>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

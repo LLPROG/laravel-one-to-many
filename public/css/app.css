@@ -12178,3 +12178,27 @@ fieldset:disabled .btn {
   }
 }
 
+.overlay {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay .popup {
+  margin: auto;
+  padding: 2rem;
+  max-width: 90%;
+  background-color: white;
+  border-radius: 1rem;
+}
+
+.author {
+  background-color: rgba(0, 128, 0, 0.541);
+  display: inline-block;
+}
+
+.content {
+  border-top: 1px solid gray;
+}
+

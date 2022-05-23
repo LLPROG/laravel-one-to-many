@@ -35,10 +35,11 @@ if (btnSlugger) {
 const confirmationOverlay = document.querySelector('#confirmation-overlay');
 
 if (confirmationOverlay) {
+    const confirmationForm = confirmationOverlay.querySelector('form');
+
     document.querySelectorAll('.btn-delete').forEach(button => {
         button.addEventListener('click', function () {
             const index = this.closest('tr').dataset.id;
-            const confirmationForm = confirmationOverlay.querySelector('form');
             const action = confirmationForm.dataset.base.replace('*****', index);
             confirmationForm.action = action;
 

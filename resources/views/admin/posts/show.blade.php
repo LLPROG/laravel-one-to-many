@@ -16,31 +16,19 @@
 
         {{-- post details --}}
         <div class="row">
-            <div class="col">
-                <h1>
+            <div class="col text-center">
+                <h1 class="text-uppercase py-2">
                     {{ $post->title }}
                 </h1>
-                <p>
+                <p class="author">
+                    Post by: {{ $post->user->name }} - {{ $post->user->userInfo->phone_number }}
+                </p>
+                <p class="category">
+                    {{ $post->category->name }}
+                </p>
+                <p class="content pt-3">
                     {{ $post->content }}
                 </p>
-            </div>
-        </div>
-
-        {{-- edit button --}}
-        <div>
-            <a class="btn btn-primary" href="{{ route('admin.posts.edit', $post->id) }}">Edit</a>
-        </div>
-
-        {{-- delete button --}}
-        <div class="row">
-            <div class="col">
-                <form method="POST" action="{{  route('admin.posts.destroy', $post->id) }}" >
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger btn-delete">
-                        Delete
-                    </button>
-                </form>
             </div>
         </div>
 

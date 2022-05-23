@@ -4,12 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserInfo extends Model
+class Category extends Model
 {
-    public function user ()
+
+    public function Posts ()
+
     {
-        return $this->belongsTo('App\User');
+        return $this->hasMany('App\Post');
     }
+
 
     public $timestamps = false;
 }

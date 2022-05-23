@@ -7,16 +7,17 @@ use Illuminate\Support\Str;
 
 class Post extends Model
 {
-    public function userInfos ()
-
-    {
-        return $this->hasOne('App\UserInfo');
-    }
 
     public function User ()
 
     {
-        return $this->belongTo('App\User');
+        return $this->belongsTo('App\User');
+    }
+
+    public function Category ()
+
+    {
+        return $this->belongsTo('App\Category');
     }
 
     public function getRouteKeyName()
@@ -24,7 +25,7 @@ class Post extends Model
         return 'slug';
     }
 
-    protected $fillable = ['title', 'content', 'slug'];
+    protected $fillable = ['title', 'content', 'slug', 'user_id', 'category_id'];
 
     // funzione di generazione dello slug
     static public function slugGenerator($originalString) {

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Category;
+
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -21,117 +23,95 @@ class PostController extends Controller
     // validation with function
     private function validator($model) {
         return [
+
+            'category_id'   => 'required|exists:App\Category,id',
             'title'         => 'required|min:3|max:100',
             'content'       => 'required',
             'slug' => [
                 'required',
-                Rule::unique('posts')->ignore($model->id),
+                Rule::unique('posts')->ignore($model),
             ]
         ];
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    // function to shwo just personal id post
+    public function myindex() {
+        $posts = Post::where('user_id', Auth::user()->id)->paginate(50);
 
-    {
+        return view('admin.posts.index', compact('posts'));
+    }
+
+    public function index() {
         $posts = Post::paginate(15);
 
         return view('admin.posts.index', compact('posts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('admin.posts.create');
+    public function create() {
+        $categories = Category::all();
+        // dd($categories);
+        return view('admin.posts.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
+
         $newPostData = $request->all();
+
         //validazione
         $request->validate($this->validator(null));
 
-        // $newPostData['slug'] = Post::slugGenerator($newPostData['title']);
+        $formData = $request->all() + [
+            'user_id' => Auth::user()->id
+        ];
 
-        $post = Post::create($request->all());
+        $post = Post::create($formData);
 
         return redirect()->route('admin.posts.show', $post->slug);
-
-        // $formData = [
-        //     'user_id' => Auth::user()->id
-        // ];
-
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Post $post)
-    {
+    public function show(Post $post) {
+
+
         return view('admin.posts.show', [
             'post' => $post,
-            'pageTitle' => $post->title
+            'pageTitle' => $post->title,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
-    {
+    public function edit(Post $post) {
+
+        if (Auth::user()->id !== $post->user_id) abort(403);
+
         return view('admin.posts.edit', compact('post'));
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Post $post)
-    {
+    public function update(Request $request, Post $post) {
+
+        if (Auth::user()->id !== $post->user_id) abort(403);
+
         $request->validate($this->validator($post->id));
 
         // prendiamo i nuovi valori
         $newPostData = $request->all();
 
-        // dd($newPostData);
-        $newPostData['slug'] = Post::slugGenerator($newPostData['title']);
         $post->update($newPostData);
+
         return redirect()->route('admin.posts.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Post $post)
-    {
+    public function destroy(Post $post) {
+
+        if (Auth::user()->id !== $post->user_id) abort(403);
+
+
         $post->delete();
 
-        return redirect()->route('admin.posts.index');
+        // condition for button delete in edit
+        // if (previos() === route('admin.posts.edit', $post->slug)) {
+        //     return redirect()->rout('admin.home');
+        // }
+
+        return redirect()->back();
     }
 }

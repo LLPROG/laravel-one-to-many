@@ -15,8 +15,13 @@
                     @endif
 
                     <a class="btn btn-primary" href="{{ route('admin.posts.index') }}">
-                        Go to Post list
+                        All Post
                     </a>
+
+                    <a class="btn btn-primary" href="{{ route('admin.posts.myindex') }}">
+                        My Post
+                    </a>
+
                 </div>
             </div>
         </div>
