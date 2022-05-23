@@ -11,6 +11,24 @@
                 </a>
             </div>
         </div>
+
+        {{-- CATEGORY FORM --}}
+        <form action="" method="get" class="row g-3 mb-3">
+            <div class="col-md-6">
+                <select class="form-select" aria-label="Default select example" name="category" id="category">
+                    <option value="" selected>Select a category</option>
+
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" @if($category->id == $request->category) selected @endif>{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn btn-primary">Applica filtri</button>
+            </div>
+        </form>
+
         @if (session('deleted'))
             <div class="alert alert-warning">{{ session('deleted') }}</div>
         @endif
@@ -23,6 +41,7 @@
                         <th class="text-center" scope="col">Title</th>
                         <th class="text-center" scope="col">Content</th>
                         <th class="text-center" scope="col">Slug</th>
+                        <th class="text-center" scope="col">Category</th>
                         <th class="text-center" scope="col">Created At</th>
                         <th class="text-center" scope="col">Updated At</th>
                         <th class="text-center" scope="col" colspan="3">Actions</th>
@@ -35,6 +54,8 @@
                                 <td>{{ $post->title }}</td>
                                 <td>{{ $post->content }}</td>
                                 <td>{{ $post->slug }}</td>
+                                <td>{{ $post->category_id }}</td>
+
 
                                 <td>{{ date('d/m/Y', strtotime($post->created_at)) }}</td>
                                 <td>{{ date('d/m/Y', strtotime($post->updated_at)) }}</td>

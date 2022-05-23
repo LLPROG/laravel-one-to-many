@@ -36,15 +36,33 @@ class PostController extends Controller
 
     // function to shwo just personal id post
     public function myindex() {
-        $posts = Post::where('user_id', Auth::user()->id)->paginate(50);
 
-        return view('admin.posts.index', compact('posts'));
+        $posts = Post::where('user_id', Auth::user()->id)->paginate(50);
+        $categories = Category::all();
+
+        return view('admin.posts.index', [
+            'posts' => $posts,
+            'categories'  => $categories
+        ]);
     }
 
-    public function index() {
-        $posts = Post::paginate(15);
+    public function index(Request $request) {
 
-        return view('admin.posts.index', compact('posts'));
+        $posts = Post::where('id', '>', 0);
+
+        if ($request->category) {
+            $posts->where('category_id', $request->category);
+        }
+
+        $posts = $posts->paginate(20);
+
+        $categories = Category::all();
+
+        return view('admin.posts.index', [
+            'posts' => $posts,
+            'categories'  => $categories,
+            'request' => $request
+        ]);
     }
 
     public function create() {
